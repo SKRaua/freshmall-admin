@@ -12,7 +12,7 @@
             :scroll="{ x: 'max-content' }">
             <template #bodyCell="{ column, text, record }">
                 <template v-if="column.key === 'avatar'">
-                    <img v-if="record.avatar" :src="`${BASE_URL}/api/staticfiles/avatar/${record.avatar}`" alt="头像"
+                    <img v-if="record.avatar" :src="`/api/staticfiles/avatar/${record.avatar}`" alt="头像"
                         style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover" />
                     <span v-else>--</span>
                 </template>
@@ -70,7 +70,6 @@ import { computed, reactive, ref } from 'vue';
 import { message } from 'ant-design-vue';
 import { createApi, deleteApi, listApi, updateApi } from '/@/api/user';
 import { useUserStore } from '/@/store';
-import { BASE_URL } from '/@/store/constants';
 
 const userStore = useUserStore();
 

@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, h, ref } from 'vue';
 import dayjs, { Dayjs } from 'dayjs';
 import { message } from 'ant-design-vue';
 import { deleteApi, listApi, updateStatusApi } from '/@/api/order';
@@ -100,7 +100,13 @@ const columns = [
     { title: '序号', dataIndex: 'index', key: 'index', width: 80, align: 'center' },
     { title: '编号', dataIndex: 'orderNumber', key: 'orderNumber', width: 180 },
     { title: '用户', dataIndex: 'username', key: 'username', width: 120 },
-    { title: '产品名称', dataIndex: 'title', key: 'title', width: 160 },
+    {
+        title: '产品名称',
+        dataIndex: 'title',
+        key: 'title',
+        width: 160,
+        customRender: ({ text }: { text: string }) => h('span', { class: 'title-ellipsis-3' }, text || '--'),
+    },
     { title: '状态', dataIndex: 'status', key: 'status', width: 100, align: 'center' },
     { title: '姓名', dataIndex: 'receiverName', key: 'receiverName', width: 120 },
     { title: '收货地址', dataIndex: 'receiverAddress', key: 'receiverAddress', width: 220 },
@@ -249,5 +255,16 @@ loadData();
 <style scoped>
 .operation-actions {
     white-space: nowrap;
+}
+
+.title-ellipsis-3 {
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    line-height: 1.4;
 }
 </style>

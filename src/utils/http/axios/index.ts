@@ -1,11 +1,10 @@
 import axios from 'axios';
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { IResponse } from './type';
-import { ADMIN_USER_TOKEN, BASE_URL } from '/@/store/constants';
+import { ADMIN_USER_TOKEN } from '/@/store/constants';
 
 const service: AxiosInstance = axios.create({
-  // baseURL: import.meta.env.BASE_URL + '',
-  baseURL: BASE_URL + '',
+  baseURL: '',
   timeout: 15000,
 });
 

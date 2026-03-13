@@ -13,7 +13,7 @@
             :pagination="pagination" :scroll="{ x: 'max-content' }">
             <template #bodyCell="{ column, text, record }">
                 <template v-if="column.key === 'cover'">
-                    <img v-if="record.cover" :src="`${BASE_URL}/api/staticfiles/image/${record.cover}`" alt="商品图"
+                    <img v-if="record.cover" :src="`/api/staticfiles/image/${record.cover}`" alt="商品图"
                         style="width: 36px; height: 36px; border-radius: 4px; object-fit: cover" />
                     <span v-else>--</span>
                 </template>
@@ -102,11 +102,10 @@
 </template>
 
 <script setup>
-import { computed, reactive, ref } from 'vue';
+import { computed, h, reactive, ref } from 'vue';
 import { message } from 'ant-design-vue';
 import { createApi, deleteApi, listApi, updateApi } from '/@/api/thing';
 import { listApi as listClassificationApi } from '/@/api/classification';
-import { BASE_URL } from '/@/store/constants';
 
 const loading = ref(false);
 const list = ref([]);
@@ -146,7 +145,13 @@ const rules = {
 
 const columns = [
     { title: '图片', dataIndex: 'cover', key: 'cover', width: 90, align: 'center' },
-    { title: '名称', dataIndex: 'title', key: 'title', width: 180 },
+    {
+        title: '名称',
+        dataIndex: 'title',
+        key: 'title',
+        width: 180,
+        customRender: ({ text }) => h('span', { class: 'title-ellipsis-3' }, text || '--'),
+    },
     { title: '价格', dataIndex: 'price', key: 'price', width: 100 },
     { title: '品种', dataIndex: 'pinzhong', key: 'pinzhong', width: 120 },
     { title: '保质期', dataIndex: 'baozhiqi', key: 'baozhiqi', width: 120 },
@@ -241,7 +246,7 @@ const openEdit = (record) => {
     formState.repertory = record.repertory;
     formState.status = record.status || '0';
     if (record.cover) {
-        coverPreview.value = `${BASE_URL}/api/staticfiles/image/${record.cover}`;
+        coverPreview.value = `/api/staticfiles/image/${record.cover}`;
     }
     visible.value = true;
 };
@@ -298,3 +303,16 @@ const handleBatchDelete = async () => {
 loadData();
 loadClassifications();
 </script>
+
+<style scoped>
+.title-ellipsis-3 {
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    line-height: 1.4;
+}
+</style>
