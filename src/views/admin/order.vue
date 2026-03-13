@@ -32,10 +32,7 @@
                 <template v-else-if="scope.column.key === 'operation'">
                     <a-space class="operation-actions" :wrap="false" size="small">
                         <a-select :value="String(scope.record.status)" :options="statusOptions" style="width: 120px"
-                            @change="handleInlineStatusChange(scope.record.id)" />
-                        <a-popconfirm title="确定将该订单状态改为已取消？" @confirm="handleCancel(scope.record.id)">
-                            <a>取消订单</a>
-                        </a-popconfirm>
+                            @change="handleInlineStatusChange(scope.record.id, $event)" />
                         <a-popconfirm title="确定删除该订单？" @confirm="handleDelete(scope.record.id)">
                             <a>删除</a>
                         </a-popconfirm>
@@ -192,7 +189,7 @@ const handleUpdateStatus = async (id: string | number, status: string | number, 
     await loadData();
 };
 
-const handleInlineStatusChange = (id: string | number) => (value: unknown) => {
+const handleInlineStatusChange = (id: string | number, value: unknown) => {
     handleUpdateStatus(id, String(value));
 };
 
@@ -210,11 +207,6 @@ const handleResetSearch = async () => {
     };
     page.value = 1;
     await loadData();
-};
-
-const handleCancel = async (id: string | number) => {
-    await handleUpdateStatus(id, '0', true);
-    message.success('订单已取消');
 };
 
 const handleDelete = async (id: string | number) => {
