@@ -69,6 +69,7 @@ const searchForm = ref<{
 });
 
 const statusOptions = [
+    { label: '待支付', value: '4' },
     { label: '待发货', value: '1' },
     { label: '待收货', value: '2' },
     { label: '已完成', value: '3' },
@@ -76,6 +77,7 @@ const statusOptions = [
 ];
 
 const searchStatusOptions = [
+    { label: '待支付', value: '4' },
     { label: '待发货', value: '1' },
     { label: '待收货', value: '2' },
     { label: '已完成', value: '3' },
@@ -83,6 +85,7 @@ const searchStatusOptions = [
 ];
 
 const statusLabelMap: Record<string, string> = {
+    '4': '待支付',
     '1': '待发货',
     '2': '待收货',
     '3': '已完成',
@@ -90,6 +93,7 @@ const statusLabelMap: Record<string, string> = {
 };
 
 const statusColorMap: Record<string, string> = {
+    '4': 'gold',
     '1': 'processing',
     '2': 'warning',
     '3': 'success',

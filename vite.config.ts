@@ -7,8 +7,8 @@ function pathResolve(dir: string) {
 }
 
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), '');
-
+  const env = loadEnv(mode, '.', '');
+  // const env = loadEnv(mode, process.cwd(), '');
   return {
     base: '/',
     publicDir: 'public',
