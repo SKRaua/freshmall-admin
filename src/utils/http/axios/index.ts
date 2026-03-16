@@ -1,7 +1,13 @@
 import axios from 'axios';
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError, InternalAxiosRequestConfig } from 'axios';
+import { showMessage } from './status';
 import { IResponse } from './type';
 import { ADMIN_USER_TOKEN } from '/@/store/constants';
+
+const resolveBizMessage = (payload: any): string => {
+  if (!payload) return '请求失败';
+  return payload.msg || payload.message || payload.trace || '请求失败';
+};
 
 const service: AxiosInstance = axios.create({
   baseURL: '',
@@ -27,21 +33,19 @@ service.interceptors.response.use(
       if (response.data.code == 0 || response.data.code == 200) {
         return response;
       } else {
-        return Promise.reject(response.data);
+        const msg = resolveBizMessage(response.data);
+        return Promise.reject({ ...response.data, msg });
       }
     } else {
-      return Promise.reject(response.data);
+      const msg = resolveBizMessage(response.data);
+      return Promise.reject({ ...response.data, msg });
     }
   },
   // 请求失败
   (error: any) => {
-    console.log(error.response.status);
-    if (error.response.status == 404) {
-      // todo
-    } else if (error.response.status == 403) {
-      // todo
-    }
-    return Promise.reject(error);
+    const status = error?.response?.status;
+    const msg = error?.response?.data?.msg || error?.response?.data?.message || showMessage(status || 'UNKNOWN');
+    return Promise.reject({ ...error?.response?.data, status, msg });
   },
 );
 

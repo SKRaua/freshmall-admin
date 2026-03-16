@@ -3,6 +3,8 @@ import { get, post } from '/@/utils/http/axios';
 const URL = {
     list: '/api/order/list',
     create: '/api/order/create',
+    submit: '/api/order/submit',
+    payByPaymentNo: '/api/order/payByPaymentNo',
     update: '/api/order/update',
     delete: '/api/order/delete',
     cancel: '/api/order/cancelOrder',
@@ -22,6 +24,10 @@ const createApi = async (data) =>
         data: data,
         headers: { 'Content-Type': 'multipart/form-data;charset=utf-8' }
     });
+const submitApi = async (params) =>
+    post({ url: URL.submit, params: params, headers: {} });
+const payByPaymentNoApi = async (params) =>
+    post({ url: URL.payByPaymentNo, params: params, headers: {} });
 const updateApi = async (params, data) =>
     post({
         url: URL.update,
@@ -40,4 +46,15 @@ const cancelApi = async (params) =>
 const cancelUserOrderApi = async (params) =>
     post({ url: URL.cancelUserOrder, params: params, headers: {} });
 
-export { listApi, userOrderListApi, createApi, updateApi, updateStatusApi, deleteApi, cancelApi, cancelUserOrderApi };
+export {
+    listApi,
+    userOrderListApi,
+    createApi,
+    submitApi,
+    payByPaymentNoApi,
+    updateApi,
+    updateStatusApi,
+    deleteApi,
+    cancelApi,
+    cancelUserOrderApi,
+};

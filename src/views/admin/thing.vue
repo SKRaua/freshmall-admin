@@ -257,36 +257,44 @@ const closeModal = () => {
 };
 
 const handleSubmit = async () => {
-    await formRef.value?.validate();
-    const formData = new FormData();
-    if (editingId.value) formData.append('id', editingId.value);
-    formData.append('title', formState.title);
-    if (formState.classificationId) formData.append('classificationId', formState.classificationId);
-    if (formState.imageFile) formData.append('imageFile', formState.imageFile);
-    formData.append('description', formState.description || '');
-    formData.append('price', formState.price ?? '');
-    formData.append('pinzhong', formState.pinzhong || '');
-    formData.append('baozhiqi', formState.baozhiqi || '');
-    formData.append('shengchanriqi', formState.shengchanriqi || '');
-    formData.append('repertory', formState.repertory ?? '');
-    formData.append('status', formState.status || '0');
+    try {
+        await formRef.value?.validate();
+        const formData = new FormData();
+        if (editingId.value) formData.append('id', editingId.value);
+        formData.append('title', formState.title);
+        if (formState.classificationId) formData.append('classificationId', formState.classificationId);
+        if (formState.imageFile) formData.append('imageFile', formState.imageFile);
+        formData.append('description', formState.description || '');
+        formData.append('price', formState.price ?? '');
+        formData.append('pinzhong', formState.pinzhong || '');
+        formData.append('baozhiqi', formState.baozhiqi || '');
+        formData.append('shengchanriqi', formState.shengchanriqi || '');
+        formData.append('repertory', formState.repertory ?? '');
+        formData.append('status', formState.status || '0');
 
-    if (editingId.value) {
-        await updateApi(formData);
-        message.success('编辑成功');
-    } else {
-        await createApi(formData);
-        message.success('新增成功');
+        if (editingId.value) {
+            await updateApi(formData);
+            message.success('编辑成功');
+        } else {
+            await createApi(formData);
+            message.success('新增成功');
+        }
+
+        closeModal();
+        await loadData();
+    } catch (err) {
+        message.error(err?.msg || err?.message || '操作失败，请稍后重试');
     }
-
-    closeModal();
-    await loadData();
 };
 
 const handleDelete = async (id) => {
-    await deleteApi({ ids: id });
-    message.success('删除成功');
-    await loadData();
+    try {
+        await deleteApi({ ids: id });
+        message.success('删除成功');
+        await loadData();
+    } catch (err) {
+        message.error(err?.msg || err?.message || '删除失败，请稍后重试');
+    }
 };
 
 const handleBatchDelete = async () => {
@@ -294,10 +302,14 @@ const handleBatchDelete = async () => {
         message.warning('请先勾选要删除的商品');
         return;
     }
-    await deleteApi({ ids: selectedRowKeys.value.join(',') });
-    selectedRowKeys.value = [];
-    message.success('批量删除成功');
-    await loadData();
+    try {
+        await deleteApi({ ids: selectedRowKeys.value.join(',') });
+        selectedRowKeys.value = [];
+        message.success('批量删除成功');
+        await loadData();
+    } catch (err) {
+        message.error(err?.msg || err?.message || '批量删除失败，请稍后重试');
+    }
 };
 
 loadData();

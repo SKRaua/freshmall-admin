@@ -45,7 +45,6 @@
 
 <script setup lang="ts">
 import { computed, h, ref } from 'vue';
-import dayjs, { Dayjs } from 'dayjs';
 import { message } from 'ant-design-vue';
 import { deleteApi, listApi, updateStatusApi } from '/@/api/order';
 import { getFormatTime } from '/@/utils';
@@ -60,13 +59,20 @@ const searchForm = ref<{
     orderNumber: string;
     username: string;
     status: string | undefined;
-    timeRange: [Dayjs, Dayjs] | null;
+    timeRange: [any, any] | null;
 }>({
     orderNumber: '',
     username: '',
     status: undefined,
     timeRange: null,
 });
+
+const toTimestamp = (value: any): number => {
+    if (value && typeof value.valueOf === 'function') {
+        return Number(value.valueOf());
+    }
+    return Number(value);
+};
 
 const statusOptions = [
     { label: '待支付', value: '4' },
@@ -151,8 +157,8 @@ const loadData = async () => {
             params.status = searchForm.value.status;
         }
         if (searchForm.value.timeRange?.length === 2) {
-            params.startTime = String(dayjs(searchForm.value.timeRange[0]).valueOf());
-            params.endTime = String(dayjs(searchForm.value.timeRange[1]).valueOf());
+            params.startTime = String(toTimestamp(searchForm.value.timeRange[0]));
+            params.endTime = String(toTimestamp(searchForm.value.timeRange[1]));
         }
 
         const res = await listApi(params);
@@ -170,8 +176,8 @@ const loadData = async () => {
             data = data.filter((item: any) => String(item.status) === String(searchForm.value.status));
         }
         if (searchForm.value.timeRange?.length === 2) {
-            const start = dayjs(searchForm.value.timeRange[0]).valueOf();
-            const end = dayjs(searchForm.value.timeRange[1]).valueOf();
+            const start = toTimestamp(searchForm.value.timeRange[0]);
+            const end = toTimestamp(searchForm.value.timeRange[1]);
             data = data.filter((item: any) => {
                 const current = Number(item.orderTime);
                 return Number.isFinite(current) && current >= start && current <= end;

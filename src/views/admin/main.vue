@@ -20,7 +20,7 @@
               <span>{{ menu.label }}</span>
             </a-menu-item>
 
-            <a-sub-menu v-else :key="menu.key">
+            <a-sub-menu v-else :key="`submenu-${menu.key}`">
               <template #icon>
                 <component :is="menu.icon" />
               </template>
@@ -66,6 +66,9 @@ watch(
 );
 
 const handleClick = ({ key }: { key: string }) => {
+  if (!router.hasRoute(key)) {
+    return;
+  }
   router.push({ name: key });
 };
 
