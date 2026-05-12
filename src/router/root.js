@@ -22,7 +22,6 @@ const constantRouterMap = [
       { path: 'user', name: 'user', component: () => import('/@/views/admin/user.vue') },
       { path: 'classification', name: 'classification', component: () => import('/@/views/admin/classification.vue') },
 
-      { path: 'notice', name: 'notice', component: () => import('/@/views/admin/notice.vue') },
       { path: 'loginLog', name: 'loginLog', component: () => import('/@/views/admin/login-log.vue') },
       { path: 'opLog', name: 'opLog', component: () => import('/@/views/admin/op-log.vue') },
       { path: 'errorLog', name: 'errorLog', component: () => import('/@/views/admin/error-log.vue') },

@@ -31,12 +31,6 @@ export const ADMIN_MENU = [
     icon: TagOutlined,
   },
   {
-    key: 'operation',
-    label: '运营管理',
-    icon: FolderOutlined,
-    children: [{ key: 'notice', label: '通知公告', icon: AppstoreOutlined }],
-  },
-  {
     key: 'logs',
     label: '日志管理',
     icon: FolderOutlined,
